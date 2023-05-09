@@ -5,7 +5,7 @@ $(function (){
     const messageBox = $('#message');
     const chat = $('#chat');
 
-    // var nick = '';
+    // var u = '';
 
     //obtener nickname form
     const nickForm = $('#nickForm');
@@ -65,8 +65,13 @@ $(function (){
                     color = "#9ff4c5";
                 }
             })
-    
-            chat.append(`<div style="background-color:${color}"><b>${data.nick}: </b>${data.msg}</div>`);
+            
+            if(classCSS == 'izq'){
+                chat.append(`<div style="background-color:${color}"><b>${data.nick}: </b>${data.msg}</div>`);
+            } else {
+                chat.append(`<div style="background-color:${color}">${data.msg}<b> :${data.nick} </b></div>`);
+            }
+            
                 
             });
 

@@ -40,6 +40,7 @@ module.exports = function(io){
                 io.sockets.emit('nuevo mensaje', {
                     msg: data,
                     nick: socket.nickname,
+                    
                 });
             }
         });
