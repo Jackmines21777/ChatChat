@@ -13,3 +13,18 @@ body{
     color: gray;
     font-style: italic;
 }
+
+#chat > * {
+    margin:5px 0;
+}
+
+.drc {  
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: chartreuse;
+}
+
+.izq{
+    display: flex;
+    background-color: #f8f8f8;
+}

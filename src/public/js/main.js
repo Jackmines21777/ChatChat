@@ -1,4 +1,7 @@
-$(function (){
+
+
+
+$(function () {
     const socket = io();
     // obtener dOM
     const messageForm = $('#message-form');
@@ -14,66 +17,103 @@ $(function (){
     const usernames = $('#usernames');
 
 
-    nickForm.submit(e =>{
+    let miNick;
+
+    nickForm.submit(e => {
         e.preventDefault();
-        socket.emit('nuevo usuario', nickname.val(), data =>{
-            if(data){
-                $('#nick-wrap').hide();
-                $('#content-wrap').show();
-            }else{
-                nickError.html(`
-                <div class="alert alert-danger"> 
-                 Usuario ya existe.
-                </div>
-                `);
-            }
-        });
+        if (nickname.val() !== '') {
+            socket.emit('nuevo usuario', nickname.val(), data => {
+                if (data) {
+                    miNick = nickname.val();//diferente por cada cliente
+                    $('#nick-wrap').hide();
+                    $('#content-wrap').show();
+                } else {
+                    nickError.html(`
+                    <div class="alert alert-danger"> 
+                     Usuario ya existe.
+                    </div>
+                    `);
+                }
+            });
+        } else {
+            nickError.html(`
+                    <div class="alert alert-danger"> 
+                    No se ingreso un nombre de usuario.
+                    </div>
+                    `);
+        }
+
+
     });
 
 
     // eventos
     messageForm.submit(e => {
         e.preventDefault();
-        socket.emit('enviar mensaje', messageBox.val(), data =>{
+        socket.emit('enviar mensaje', messageBox.val(), data => {
             $chat.append(`<p class="error"> ${data}</p> `)
         });
         messageBox.val('');
     });
-     username = [];
 
-    
 
-    socket.on('usernames', users =>{
-        let html ='';
-        this.username = users;
-        // console.log(this.username);
-        for (let i=0; i<users.length; i++){
-            html += `<p> 👀 ${users[i]}</p>`
+
+    //subscripcion solo para  listar users en html
+    socket.on('usernames', users => {
+        let color = ''
+        let html = '';
+
+        console.log(users)
+
+
+        for (let i = 0; i < users.length; i++) {
+            if (miNick == users[i]) {
+                color = "#9ff4c5";
+            } else {
+                color = "#f8f8f8"
+            }
+            html += `<p style="background:${color}"> 👀 ${users[i]}</p>`
         }
         usernames.html(html);
-
-        socket.on('nuevo mensaje', function(data) {
-            let color = "#f4f4f4";
-            
-    
-            console.log(users);
-            // for (let i = 0; i < this.username?.length; i++) {
-                
-            // }
-            users.forEach(u => {
-                if(u==data.nick) {
-                    color = "#9ff4c5";
-                }
-            })
-    
-            chat.append(`<div style="background-color:${color}"><b>${data.nick}: </b>${data.msg}</div>`);
-                
-            });
-
     });
 
-    socket.on('privado', data =>{
+
+
+
+    //subscripcion solo para recibir el nuevo mensaje
+    socket.on('nuevo mensaje', data => {
+
+        /*
+        data = {msg=adkasda ,nick= da,userNames = ['da','de','do']}
+        */
+
+        let classCSS = "izq";
+        console.log(data);
+        listaMsg.push(data.msg)
+
+        if (miNick == data.nick) {
+            classCSS = "drc";
+            chat.append(`<div class="${classCSS}"><b> :${data.nick}</b> ${data.msg} </div>`);
+
+        }else{
+            chat.append(`<div class="${classCSS}"><b>${data.nick}: </b> ${data.msg} </div>`);
+        }
+
+
+        
+    });
+
+
+
+
+
+    socket.on('privado', data => {
         chat.append(`<p class="privado"><b>${data.nick}: </b>${data.msg}</p>`);
     });
 
 })
+let listaMsg = []
+
+
+//on = subscripcion
+//emi = emitir
