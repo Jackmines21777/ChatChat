@@ -1,5 +1,7 @@
-body{
-    background-color: rgb(215, 173, 97);
+body {
+    background: rgb(105,105,105);
+background: linear-gradient(90deg, rgba(105,105,105,1) 0%, rgba(196,196,196,1) 27%, rgba(196,196,196,1) 63%, rgba(61,61,61,1) 96%);
+
 }
 
 #content-wrap{
@@ -12,4 +14,19 @@ body{
 .privado{
     color: gray;
     font-style: italic;
+}
+
+#chat > * {
+    margin:5px 0;
+}
+
+.drc {  
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: #9ff4c5;
+}
+
+.izq{
+    display: flex;
+    background-color: #f4f4f4;
 }

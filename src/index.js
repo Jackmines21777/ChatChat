@@ -9,17 +9,17 @@ const server = require('http').Server(app);
 const socketio = require('socket.io')(server);
 const io = socketio.listen(server);
 
-// setting app
-app.set('port',process.env.PORT || 3000);
+
+app.set('port',process.env.PORT || 5000);
 
 require('./sockets')(io);
 
 
 
-// archivos estaticos
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-// empezar server
+
 server.listen(app.get('port'), () =>{
     console.log('Server en el puerto', app.get('port'));
 });
